@@ -461,7 +461,7 @@ PHP
     {
         $composerAutoloaderName = self::COMPOSER_AUTOLOADER_NAME;
 
-        yield [
+        yield 'Empty whitelist prefix' => [
             Whitelist::create(true, true, true),
             '',
             <<<PHP
@@ -476,7 +476,7 @@ return $composerAutoloaderName::getLoader();
 PHP
         ];
 
-        yield [
+        yield 'Whitelist is ignored when prefix is empty' => [
             Whitelist::create(true, true, true, 'Acme\Foo'),  // Whitelist is ignored when prefix is empty
             '',
             <<<PHP
@@ -491,7 +491,7 @@ return $composerAutoloaderName::getLoader();
 PHP
         ];
 
-        yield [
+        yield '_Box prefix' => [
             Whitelist::create(true, true, true),
             '_Box',
             <<<PHP
@@ -506,7 +506,7 @@ return $composerAutoloaderName::getLoader();
 PHP
         ];
 
-        yield [
+        yield 'Extended whitelist' => [
             (static function (): Whitelist {
                 $whitelist = Whitelist::create(true, true, true, 'Acme\Foo');
 
@@ -531,8 +531,8 @@ require_once __DIR__ . '/composer/autoload_real.php';
 
 // Aliases for the whitelisted classes. For more information see:
 // https://github.com/humbug/php-scoper/blob/master/README.md#class-whitelisting
-if (!class_exists('Acme\Foo', false)) {
-    class_exists('_Box\Acme\Foo');
+if (!class_exists('Acme\Foo', false) && !interface_exists('Acme\Foo', false) && !trait_exists('Acme\Foo', false)) {
+    spl_autoload_call('_Box\Acme\Foo');
 }
 
 return \$loader;
@@ -540,7 +540,7 @@ return \$loader;
 PHP
         ];
 
-        yield [
+        yield 'Whitelist with a function' => [
             (static function (): Whitelist {
                 $whitelist = Whitelist::create(true, true, true, 'Acme\Foo');
 
@@ -576,7 +576,7 @@ return \$loader;
 PHP
         ];
 
-        yield [
+        yield 'Whitelist with namespaced function' => [
             (static function (): Whitelist {
                 $whitelist = Whitelist::create(true, true, true, 'Acme\Foo');
 

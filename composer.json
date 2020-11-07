@@ -62,7 +62,8 @@
         "symfony/finder": "^4.0",
         "symfony/process": "^4.2",
         "symfony/var-dumper": "^4.2",
-        "webmozart/path-util": "^2.3"
+        "webmozart/path-util": "^2.3",
+        "composer-plugin-api": "^2.0.0"
     },
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.3",
